@@ -2,14 +2,14 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 import { Menu } from "lucide-react";
 import  API_BASE_URL from "./service/core/api.js"
-import Sidebar from "./components/Sidebar/Sidebar";
-import ChatHeader from "./components/ChatHeader/ChatHeader";
-import MessageList from "./components/MessageList/MessageList";
-import ChatInput from "./components/ChatInput/ChatInput";
-import Images from "./components/Images/Images";
-import AppsPage from "./components/Apps/AppsPage"; 
-import Login from "./components/Auth/Login";
-import Register from "./components/Auth/Register";
+import Sidebar from "./components/Sidebar/Sidebar.jsx";
+import ChatHeader from "./components/ChatHeader/ChatHeader.jsx";
+import MessageList from "./components/MessageList/MessageList.jsx";
+import ChatInput from "./components/ChatInput/ChatInput.jsx";
+import Images from "./components/Images/Images.jsx";
+import AppsPage from "./components/Apps/AppsPage.jsx"; 
+import Login from "./components/Auth/Login.jsx";
+import Register from "./components/Auth/Register.jsx";
 
 import "./App.css";
 
