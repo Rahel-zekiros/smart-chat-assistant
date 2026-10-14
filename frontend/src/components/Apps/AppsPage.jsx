@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import styles from './Apps.module.css';
-
+import styles from "./Apps.module.css";
 export default function AppsPage({ onBackToChat }) {
   const [apps, setApps] = useState([
     { id: 1, name: 'Web Search Tool', description: 'Allows the AI to search real-time information from the web.', category: 'Productivity', enabled: true },
