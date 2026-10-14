@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './apps.module.css';
+import styles from './Apps.module.css';
 
 export default function AppsPage({ onBackToChat }) {
   const [apps, setApps] = useState([
