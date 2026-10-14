@@ -1,4 +1,3 @@
-
 import connection from "../Config/db.js";
 import ai from "../Config/gemini.js";
 
@@ -73,7 +72,7 @@ export const createConversation = async (req, res) => {
         FROM messages
         ORDER BY created_at DESC, id DESC
         LIMIT 10
-      `
+      `,
     );
 
     // Reverse history to chronological order
@@ -86,25 +85,43 @@ export const createConversation = async (req, res) => {
     console.log("History loaded:", historyRows.length, "messages");
 
     // System instructions
+
     const systemPrompt = `
-You are a helpful AI assistant for a ChatGPT clone.
+You are a helpful, intelligent, and conversational AI assistant
+for a ChatGPT clone.
 
-You ONLY answer questions related to:
-- Programming
-- Software Engineering
-- Computer Science
-- Information Technology
-- Web Development
-- Databases
-- APIs
-- Programming languages
-- Software development tools
+You can answer questions about any topic, including:
+- Programming and software engineering
+- Computer science and information technology
+- Education and learning
+- Science and technology
+- Mathematics
+- History and geography
+- Language, writing, and translation
+- General knowledge
+- Everyday life and practical advice
+- Creativity, brainstorming, and problem-solving
+- Business and productivity
+- Other topics the user asks about
 
-If the user asks about something unrelated to these topics,
-politely refuse and redirect the user toward programming,
-software engineering, computer science, or IT topics.
+Do not restrict your answers to programming or IT topics.
 
-Be clear, helpful, and concise.
+Understand the user's question and provide a relevant,
+accurate, and helpful answer.
+
+Adapt your response to the user's needs:
+- Explain difficult concepts in simple language.
+- Provide examples when they help understanding.
+- Use step-by-step instructions for practical tasks.
+- Write code when requested.
+- Keep simple answers concise and provide more detail
+  when the question requires it.
+- If the question is unclear, ask a clarifying question.
+- If you are uncertain about something, be honest
+  instead of inventing information.
+
+Respond politely and naturally.
+Follow applicable safety guidelines.
 `;
 
     // Build prompt with conversation history
@@ -120,14 +137,11 @@ ${cleanQuestion}
 
     // Generate AI response using fallback models
     let answer;
-const modelsToTry = [
-  ...new Set(
-    [
-      process.env.GEMINI_MODEL,
-      "gemini-3.8-flash",
-    ].filter(Boolean)
-  ),
-];
+    const modelsToTry = [
+      ...new Set(
+        [process.env.GEMINI_MODEL, "gemini-3.8-flash"].filter(Boolean),
+      ),
+    ];
 
     let lastError;
 
@@ -154,17 +168,13 @@ const modelsToTry = [
 
           console.error(
             `Gemini model ${model} failed:`,
-            error.status || error.message
+            error.status || error.message,
           );
 
           const status = error.status;
 
           // Try another model only for temporary errors
-          if (
-            status !== 429 &&
-            status !== 503 &&
-            !(status >= 500)
-          ) {
+          if (status !== 429 && status !== 503 && !(status >= 500)) {
             throw error;
           }
         }
@@ -178,9 +188,7 @@ const modelsToTry = [
       console.error("Gemini API error:", error);
 
       const statusCode =
-        error.status === 503 || error.status === 429
-          ? 503
-          : 500;
+        error.status === 503 || error.status === 429 ? 503 : 500;
 
       const errorMessage =
         error.status === 503
@@ -201,7 +209,7 @@ const modelsToTry = [
         INSERT INTO messages (role, content)
         VALUES (?, ?)
       `,
-      ["user", cleanQuestion]
+      ["user", cleanQuestion],
     );
 
     // Save the assistant response
@@ -210,7 +218,7 @@ const modelsToTry = [
         INSERT INTO messages (role, content)
         VALUES (?, ?)
       `,
-      ["assistant", answer]
+      ["assistant", answer],
     );
 
     console.log("User and assistant messages saved successfully");
